@@ -1,0 +1,9 @@
+Package: mdebian-ntp
+Version: 1.0
+Section: admin
+Priority: optional
+Architecture: all
+Depends: systemd
+Maintainer: Michaël Roy <microygh@gmail.com>
+Description: Custom NTP client configuration
+  - Synchronize the local machine with the french NTP servers (using systemd)

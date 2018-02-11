@@ -1,0 +1,14 @@
+Package: mdebian-bash
+Version: 1.0
+Section: admin
+Priority: optional
+Architecture: all
+Depends: bash, sudo
+Maintainer: Michaël Roy <microygh@gmail.com>
+Description: Custom Bash configuration
+ - Fancy prompt
+ - Aliases
+ - Options
+ - Completion
+ - Local configuration folder (`/etc/bashrc.d`)
+ - Keep SSH_TTY environment variable in sudo (for the fancy prompt)

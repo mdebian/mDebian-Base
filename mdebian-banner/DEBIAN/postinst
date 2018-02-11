@@ -1,0 +1,12 @@
+#! /bin/sh
+
+# Halt on error
+set -e
+
+# Backup the previous banners
+dpkg-divert --add --package mdebian-banner --rename --divert /etc/issue.backup /etc/issue
+dpkg-divert --add --package mdebian-banner --rename --divert /etc/motd.backup /etc/motd
+
+# Configure our system banners
+ln -sfv /etc/issue.mdebian /etc/issue
+ln -sfv /etc/motd.mdebian /etc/motd

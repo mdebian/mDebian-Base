@@ -1,0 +1,27 @@
+#! /bin/sh
+
+# Halt on error
+set -e
+
+# Remove our configuration
+[ -L /etc/bash.bashrc ] && rm -fv /etc/bash.bashrc
+
+# Restore the original configuration
+dpkg-divert --remove --package mdebian-bash --rename --divert /etc/bash.bashrc.backup /etc/bash.bashrc
+dpkg-divert --remove --package mdebian-bash --rename --divert /etc/skel/.bashrc.backup /etc/skel/.bashrc
+
+# Restore root's .bashrc files
+if [ ! -e /root/.bashrc && -f /root/.bashrc.backup ]; then
+	echo "Restore root's .bashrc file..."
+	mv -fv /root/.bashrc.backup /root/.bashrc
+fi
+
+# Restore local users' .bashrc files
+for USERHOME in $(ls /home); do
+	if [ "$USERHOME" = 'lost+found' ]; then continue; fi
+	if [ ! -e /home/$USERHOME/.bashrc && -f /home/$USERHOME/.bashrc.backup ]; then
+		echo "Restore $USERHOME's .bashrc file..."
+		mv -fv /home/$USERHOME/.bashrc.backup /home/$USERHOME/.bashrc
+	fi
+done
+unset USERHOME
