@@ -2,10 +2,11 @@
 
 # Select the different configurations to install
 SELECT=$(whiptail --title "mdebian-base" --checklist --separate-output \
-"Choose custom configurations :" 20 78 6 \
+"Choose custom configurations :" 20 78 7 \
 "apt" "Configure apt" ON \
 "banner" "Configure banners" ON \
 "bash" "Configure bash" ON \
+"grub" "Add GRUB configuration scripts" ON \
 "minicom" "Configure minicom" OFF \
 "nano" "Configure nano" ON \
 "ntp" "Configure ntp" ON \
