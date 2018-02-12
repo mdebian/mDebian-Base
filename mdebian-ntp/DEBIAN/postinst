@@ -3,12 +3,6 @@
 # Halt on error
 set -e
 
-# Backup previous configuration
-dpkg-divert --add --package mdebian-ntp --rename --divert /etc/systemd/timesyncd.conf.backup /etc/systemd/timesyncd.conf
-
-# Configure the NTP client in systemd
-ln -sfv /etc/systemd/timesyncd.conf.mdebian /etc/systemd/timesyncd.conf
-
 # Use the NTP servers
 timedatectl set-ntp true
 
