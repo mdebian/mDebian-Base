@@ -34,7 +34,7 @@ fi;
 
 # Fancy prompt
 PS1="\n\[${user_style}\]\u"; # User
-PS1+="\[\e[m\]@";            # @
+PS1+="\[\e[m\] @ ";          # @
 PS1+="\[${host_style}\]\h";  # Host
 PS1+="\[\e[m\] : ";          # :
 PS1+="\[\e[36m\]\w\n";       # Working directory
