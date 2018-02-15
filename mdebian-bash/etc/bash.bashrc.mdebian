@@ -29,7 +29,7 @@ fi;
 if [ -n "${SSH_TTY}" ]; then
 	host_style="\e[31m";
 else
-	host_style="\e[35m";
+	host_style="\e[32m";
 fi;
 
 # Fancy prompt
