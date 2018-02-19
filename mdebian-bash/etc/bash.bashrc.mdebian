@@ -19,27 +19,29 @@ shopt -s histappend
 shopt -s checkwinsize
 
 # Highlight the user name when logged in as root.
-if [ "${USER}" = "root" ]; then
-	user_style="\e[31m";
-else
-	user_style="\e[32m";
+if [ "${USER}" = "root" ];
+then user_style="\[\e[31m\]";
+else user_style="\[\e[32m\]";
 fi;
 
 # Highlight the hostname when connected via SSH.
-if [ -n "${SSH_TTY}" ]; then
-	host_style="\e[31m";
-else
-	host_style="\e[32m";
+if [ -n "${SSH_TTY}" ];
+then host_style="\[\e[31m\]";
+else host_style="\[\e[32m\]";
 fi;
 
 # Fancy prompt
-PS1="\n\[${user_style}\]\u"; # User
-PS1+="\[\e[m\] @ ";          # @
-PS1+="\[${host_style}\]\h";  # Host
-PS1+="\[\e[m\] : ";          # :
-PS1+="\[\e[36m\]\w\n";       # Working directory
-PS1+="\[\e[m\]\\$ ";         # $
-unset -v user_style host_style
+reset_style="\[\e[m\]";
+path_style="\[\e[36m\]";
+PS1="\n[ ";                           # [
+PS1+="${user_style}\u${reset_style}"; # User
+PS1+=" @ ";                           # @
+PS1+="${host_style}\h${reset_style}"; # Host
+PS1+=" : ";                           # :
+PS1+="${path_style}\w${reset_style}"; # Working directory
+PS1+=" ]\n";                          # ]
+PS1+="\\$ ";                          # $
+unset -v user_style host_style reset_style path_style
 
 # Enable bash completion in interactive shells
 if ! shopt -oq posix; then
