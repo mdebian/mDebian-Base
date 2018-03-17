@@ -26,7 +26,6 @@ if [ ! -e /root/.bashrc && -f /root/.bashrc.backup ]; then
 	mv -fv /root/.bashrc.backup /root/.bashrc
 fi
 # Restore local users' .bashrc files
-local USERHOME
 for USERHOME in $(ls /home); do
 	if [ "$USERHOME" = 'lost+found' ]; then continue; fi
 	if [ ! -e /home/$USERHOME/.bashrc && -f /home/$USERHOME/.bashrc.backup ]; then
@@ -34,3 +33,4 @@ for USERHOME in $(ls /home); do
 		mv -fv /home/$USERHOME/.bashrc.backup /home/$USERHOME/.bashrc
 	fi
 done
+unset USERHOME

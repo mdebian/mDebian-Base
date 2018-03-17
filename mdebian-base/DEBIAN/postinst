@@ -28,7 +28,6 @@ if [ -f /root/.bashrc ]; then
 	mv -fv /root/.bashrc /root/.bashrc.backup
 fi
 # Remove local users' .bashrc files
-local USERHOME
 for USERHOME in $(ls /home); do
 	if [ "$USERHOME" = 'lost+found' ]; then continue; fi
 	if [ -f /home/$USERHOME/.bashrc ]; then
@@ -36,6 +35,7 @@ for USERHOME in $(ls /home); do
 		mv -fv /home/$USERHOME/.bashrc /home/$USERHOME/.bashrc.backup
 	fi
 done
+unset USERHOME
 
 # Use the NTP servers
 timedatectl set-ntp true
