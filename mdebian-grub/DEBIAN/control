@@ -1,9 +1,0 @@
-Package: mdebian-grub
-Version: 1.0
-Section: admin
-Priority: optional
-Architecture: all
-Maintainer: Michaël Roy <microygh@gmail.com>
-Description: Custom GRUB scripts
- - Zero GRUB timeout
- - Reinstall GRUB EFI

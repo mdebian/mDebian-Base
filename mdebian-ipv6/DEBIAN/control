@@ -1,9 +1,0 @@
-Package: mdebian-ipv6
-Version: 1.0
-Section: admin
-Priority: optional
-Architecture: all
-Depends: procps
-Maintainer: Michaël Roy <microygh@gmail.com>
-Description: Custom configuration for IPv6
-  - Enable IPv6 temporary address on all network interfaces

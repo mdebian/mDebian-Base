@@ -1,0 +1,43 @@
+#! /bin/sh
+
+# Halt on error
+set -e
+
+# Backup previous apt sources configuration
+dpkg-divert --add --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
+# Setup APT source servers in France
+ln -sfv /etc/apt/sources.list.mdebian /etc/apt/sources.list
+
+# Backup the previous banners
+dpkg-divert --add --package mdebian-base --rename --divert /etc/issue.backup /etc/issue
+dpkg-divert --add --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
+# Configure our system banners
+ln -sfv /etc/issue.mdebian /etc/issue
+ln -sfv /etc/motd.mdebian /etc/motd
+
+# Add a directory for local Bash configurations
+[ ! -d /etc/bashrc.d ] && mkdir -v /etc/bashrc.d
+# Backup the previous bash configuration
+dpkg-divert --add --package mdebian-base --rename --divert /etc/bash.bashrc.backup /etc/bash.bashrc
+dpkg-divert --add --package mdebian-base --rename --divert /etc/skel/.bashrc.backup /etc/skel/.bashrc
+# Configure bash
+ln -sfv /etc/bash.bashrc.mdebian /etc/bash.bashrc
+# Remove root's .bashrc files
+if [ -f /root/.bashrc ]; then
+	echo "Backup root's .bashrc file..."
+	mv -fv /root/.bashrc /root/.bashrc.backup
+fi
+# Remove local users' .bashrc files
+local USERHOME
+for USERHOME in $(ls /home); do
+	if [ "$USERHOME" = 'lost+found' ]; then continue; fi
+	if [ -f /home/$USERHOME/.bashrc ]; then
+		echo "Backup $USERHOME's .bashrc file..."
+		mv -fv /home/$USERHOME/.bashrc /home/$USERHOME/.bashrc.backup
+	fi
+done
+
+# Use the NTP servers
+timedatectl set-ntp true
+# Restart the NTP client service
+systemctl restart systemd-timesyncd.service
