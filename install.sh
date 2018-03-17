@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# Install the packages
+# Install the package
 sudo dpkg -i mdebian-base*.deb
 
 # Install the dependencies
