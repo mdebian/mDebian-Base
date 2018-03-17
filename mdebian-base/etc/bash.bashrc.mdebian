@@ -20,19 +20,19 @@ shopt -s checkwinsize
 
 # Highlight the user name when logged in as root.
 if [ "${USER}" = "root" ];
-then local user_style="\[\e[31m\]";
-else local user_style="\[\e[32m\]";
+then user_style="\[\e[31m\]";
+else user_style="\[\e[32m\]";
 fi;
 
 # Highlight the hostname when connected via SSH.
 if [ -n "${SSH_TTY}" ];
-then local host_style="\[\e[31m\]";
-else local host_style="\[\e[32m\]";
+then host_style="\[\e[31m\]";
+else host_style="\[\e[32m\]";
 fi;
 
 # Fancy prompt
-local reset_style="\[\e[m\]";
-local path_style="\[\e[36m\]";
+reset_style="\[\e[m\]";
+path_style="\[\e[36m\]";
 PS1="\n[ ";                           # [
 PS1+="${user_style}\u${reset_style}"; # User
 PS1+=" @ ";                           # @
@@ -41,6 +41,7 @@ PS1+=" : ";                           # :
 PS1+="${path_style}\w${reset_style}"; # Working directory
 PS1+=" ]\n";                          # ]
 PS1+="\\$ ";                          # $
+unset user_style host_style reset_style path_style
 
 # Enable bash completion in interactive shells
 if ! shopt -oq posix; then
@@ -74,10 +75,10 @@ alias df='df -h'
 
 # Import local configurations from /etc/bashrc.d
 if [ -d /etc/bashrc.d ]; then
-	local bashrc_file
 	for bashrc_file in /etc/bashrc.d/* ; do
 		if [ -r "$bashrc_file" ]; then
 			source "$bashrc_file"
 		fi
 	done
+	unset bashrc_file
 fi
