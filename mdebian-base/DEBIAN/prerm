@@ -3,21 +3,18 @@
 # Halt on error
 set -e
 
-# Remove our configuration
+# Restore the original APT configuration
 [ -L /etc/apt/sources.list ] && rm -fv /etc/apt/sources.list
-# Restore the original configuration
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
 
-# Remove our banners
-[ -L /etc/issue ] && rm -fv /etc/issue
-[ -L /etc/motd ] && rm -fv /etc/motd
 # Restore the previous banners
+[ -L /etc/issue ] && rm -fv /etc/issue
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/issue.backup /etc/issue
+[ -L /etc/motd ] && rm -fv /etc/motd
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
 
-# Remove our configuration
+# Restore the original BASH configuration
 [ -L /etc/bash.bashrc ] && rm -fv /etc/bash.bashrc
-# Restore the original configuration
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/bash.bashrc.backup /etc/bash.bashrc
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/skel/.bashrc.backup /etc/skel/.bashrc
 # Restore root's .bashrc files

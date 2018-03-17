@@ -3,25 +3,22 @@
 # Halt on error
 set -e
 
-# Backup previous apt sources configuration
+# Backup and setup APT sources
 dpkg-divert --add --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
-# Setup APT source servers in France
 ln -sfv /etc/apt/sources.list.mdebian /etc/apt/sources.list
 
-# Backup the previous banners
+# Backup and setup the banners
 dpkg-divert --add --package mdebian-base --rename --divert /etc/issue.backup /etc/issue
-dpkg-divert --add --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
-# Configure our system banners
 ln -sfv /etc/issue.mdebian /etc/issue
+dpkg-divert --add --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
 ln -sfv /etc/motd.mdebian /etc/motd
 
-# Add a directory for local Bash configurations
+# Add a directory for local BASH configurations
 [ ! -d /etc/bashrc.d ] && mkdir -v /etc/bashrc.d
-# Backup the previous bash configuration
+# Backup and setup the BASH configuration
 dpkg-divert --add --package mdebian-base --rename --divert /etc/bash.bashrc.backup /etc/bash.bashrc
-dpkg-divert --add --package mdebian-base --rename --divert /etc/skel/.bashrc.backup /etc/skel/.bashrc
-# Configure bash
 ln -sfv /etc/bash.bashrc.mdebian /etc/bash.bashrc
+dpkg-divert --add --package mdebian-base --rename --divert /etc/skel/.bashrc.backup /etc/skel/.bashrc
 # Remove root's .bashrc files
 if [ -f /root/.bashrc ]; then
 	echo "Backup root's .bashrc file..."
