@@ -3,38 +3,36 @@
 # Halt on error
 set -e
 
-# Backup and setup APT sources
+# Backup the previous configuration
 dpkg-divert --add --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
-ln -sfv /etc/apt/sources.list.mdebian /etc/apt/sources.list
-
-# Backup and setup the banners
 dpkg-divert --add --package mdebian-base --rename --divert /etc/issue.backup /etc/issue
-ln -sfv /etc/issue.mdebian /etc/issue
 dpkg-divert --add --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
-ln -sfv /etc/motd.mdebian /etc/motd
-
-# Add a directory for local BASH configurations
-[ ! -d /etc/bashrc.d ] && mkdir -v /etc/bashrc.d
-# Backup and setup the BASH configuration
 dpkg-divert --add --package mdebian-base --rename --divert /etc/bash.bashrc.backup /etc/bash.bashrc
-ln -sfv /etc/bash.bashrc.mdebian /etc/bash.bashrc
 dpkg-divert --add --package mdebian-base --rename --divert /etc/skel/.bashrc.backup /etc/skel/.bashrc
+
+# Install our configuration
+ln -sfv /etc/apt/sources.list.mdebian /etc/apt/sources.list
+ln -sfv /etc/issue.mdebian /etc/issue
+ln -sfv /etc/motd.mdebian /etc/motd
+ln -sfv /etc/bash.bashrc.mdebian /etc/bash.bashrc
+
 # Remove root's .bashrc files
-if [ -f /root/.bashrc ]; then
-	echo "Backup root's .bashrc file..."
+if [ -e /root/.bashrc ] && [ ! -e /root/.bashrc.backup ]; then
 	mv -fv /root/.bashrc /root/.bashrc.backup
 fi
+
 # Remove local users' .bashrc files
 for USERHOME in $(ls /home); do
 	if [ "$USERHOME" = 'lost+found' ]; then continue; fi
-	if [ -f /home/$USERHOME/.bashrc ]; then
-		echo "Backup $USERHOME's .bashrc file..."
+	if [ -e /home/$USERHOME/.bashrc ] && [ ! -e /home/$USERHOME/.bashrc.backup ]; then
 		mv -fv /home/$USERHOME/.bashrc /home/$USERHOME/.bashrc.backup
 	fi
 done
 unset USERHOME
 
-# Use the NTP servers
+# Add the directory for local BASH configurations
+[ ! -d /etc/bashrc.d ] && mkdir -v /etc/bashrc.d
+
+# Active and restart the NTP client service
 timedatectl set-ntp true
-# Restart the NTP client service
 systemctl restart systemd-timesyncd.service

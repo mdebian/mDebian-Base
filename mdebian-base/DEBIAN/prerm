@@ -3,31 +3,32 @@
 # Halt on error
 set -e
 
-# Restore the original APT configuration
+# Remove our configuration
 [ -L /etc/apt/sources.list ] && rm -fv /etc/apt/sources.list
-dpkg-divert --remove --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
-
-# Restore the previous banners
 [ -L /etc/issue ] && rm -fv /etc/issue
-dpkg-divert --remove --package mdebian-base --rename --divert /etc/issue.backup /etc/issue
 [ -L /etc/motd ] && rm -fv /etc/motd
-dpkg-divert --remove --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
-
-# Restore the original BASH configuration
 [ -L /etc/bash.bashrc ] && rm -fv /etc/bash.bashrc
+
+# Restore the previous configuration
+dpkg-divert --remove --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
+dpkg-divert --remove --package mdebian-base --rename --divert /etc/issue.backup /etc/issue
+dpkg-divert --remove --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/bash.bashrc.backup /etc/bash.bashrc
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/skel/.bashrc.backup /etc/skel/.bashrc
+
 # Restore root's .bashrc files
-if [ ! -e /root/.bashrc ] && [ -f /root/.bashrc.backup ]; then
-	echo "Restore root's .bashrc file..."
+if [ ! -e /root/.bashrc ] && [ -e /root/.bashrc.backup ]; then
 	mv -fv /root/.bashrc.backup /root/.bashrc
 fi
+
 # Restore local users' .bashrc files
 for USERHOME in $(ls /home); do
 	if [ "$USERHOME" = 'lost+found' ]; then continue; fi
-	if [ ! -e /home/$USERHOME/.bashrc ] && [ -f /home/$USERHOME/.bashrc.backup ]; then
-		echo "Restore $USERHOME's .bashrc file..."
+	if [ ! -e /home/$USERHOME/.bashrc ] && [ -e /home/$USERHOME/.bashrc.backup ]; then
 		mv -fv /home/$USERHOME/.bashrc.backup /home/$USERHOME/.bashrc
 	fi
 done
 unset USERHOME
+
+# Delete the directory for local BASH configurations
+rmdir -v /etc/bashrc.d
