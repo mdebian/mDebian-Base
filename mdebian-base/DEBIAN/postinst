@@ -31,7 +31,7 @@ done
 unset USERHOME
 
 # Add the directory for local BASH configurations
-[ ! -d /etc/bashrc.d ] && mkdir -v /etc/bashrc.d
+mkdir -v /etc/bashrc.d || true
 
 # Active and restart the NTP client service
 timedatectl set-ntp true

@@ -31,4 +31,4 @@ done
 unset USERHOME
 
 # Delete the directory for local BASH configurations
-rmdir -v /etc/bashrc.d
+rmdir -v /etc/bashrc.d || true
