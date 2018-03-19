@@ -3,7 +3,8 @@ Version: 9.0
 Section: admin
 Priority: optional
 Architecture: all
-Depends: apt, base-files, bash, htop, minicom, mtr-tiny, nano, sudo, systemd, tree
+Depends: apt, base-files, bash, nano, sudo, systemd
+Recommends: htop, minicom, mtr-tiny, tree
 Maintainer: Michaël Roy <microygh@gmail.com>
 Description: Custom Debian configuration
  - APT :
