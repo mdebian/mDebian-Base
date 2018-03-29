@@ -3,15 +3,18 @@
 # Halt on error
 set -e
 
+# Get OS name
+OS=$(lsb_release -is)
+
 # Backup the previous configuration
-dpkg-divert --add --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
+[ "$OS" = "Debian" ] && dpkg-divert --add --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
 dpkg-divert --add --package mdebian-base --rename --divert /etc/issue.backup /etc/issue
 dpkg-divert --add --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
 dpkg-divert --add --package mdebian-base --rename --divert /etc/bash.bashrc.backup /etc/bash.bashrc
 dpkg-divert --add --package mdebian-base --rename --divert /etc/skel/.bashrc.backup /etc/skel/.bashrc
 
 # Install our configuration
-ln -sfv /etc/apt/sources.list.mdebian /etc/apt/sources.list
+[ "$OS" = "Debian" ] && ln -sfv /etc/apt/sources.list.mdebian /etc/apt/sources.list
 ln -sfv /etc/issue.mdebian /etc/issue
 ln -sfv /etc/motd.mdebian /etc/motd
 ln -sfv /etc/bash.bashrc.mdebian /etc/bash.bashrc

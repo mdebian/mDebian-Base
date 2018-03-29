@@ -4,13 +4,13 @@
 set -e
 
 # Remove our configuration
-[ -L /etc/apt/sources.list ] && rm -fv /etc/apt/sources.list
+[ "$OS" = "Debian" ] && [ -L /etc/apt/sources.list ] && rm -fv /etc/apt/sources.list
 [ -L /etc/issue ] && rm -fv /etc/issue
 [ -L /etc/motd ] && rm -fv /etc/motd
 [ -L /etc/bash.bashrc ] && rm -fv /etc/bash.bashrc
 
 # Restore the previous configuration
-dpkg-divert --remove --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
+[ "$OS" = "Debian" ] && dpkg-divert --remove --package mdebian-base --rename --divert /etc/apt/sources.list.backup /etc/apt/sources.list
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/issue.backup /etc/issue
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/motd.backup /etc/motd
 dpkg-divert --remove --package mdebian-base --rename --divert /etc/bash.bashrc.backup /etc/bash.bashrc
